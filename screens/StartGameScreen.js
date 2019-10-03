@@ -13,7 +13,7 @@ import Card from '../components/Card';
 import Input from '../components/Input';
 import Colors from '../constants/colors';
 
-const StartGameScreen = props => {
+const StartGameScreen = () => {
   const [enteredValue, setEnteredValue] = useState('');
   const [isInputConfirmed, setIsInputConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState(null);
@@ -22,15 +22,18 @@ const StartGameScreen = props => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ''));
   };
 
-  resetInputHandler = () => {
+  const resetInputHandler = () => {
     setEnteredValue('');
   }
 
-  confirmInputHandler = () => {
+  const confirmInputHandler = () => {
     const chosenNumber = parseInt(enteredValue);
 
     if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
-      Alert.alert('Invalid number', 'Number must be in the range between 1 and 99', [{text: 'OK', style: 'destructive', onPress: resetInputHandler}]);
+      Alert.alert(
+        'Invalid number', 'Number must be in the range between 1 and 99', 
+        [{text: 'OK', style: 'destructive', onPress: resetInputHandler}]
+      );
       return;
     }
 
