@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
 import Colors from '../constants/colors';
 
@@ -18,12 +19,16 @@ const styles = StyleSheet.create({
     paddingTop: 36,
     backgroundColor: Colors.primary,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   headerTitle: {
     color: 'black',
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 });
+
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 
 export default Header;
