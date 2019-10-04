@@ -8,6 +8,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import Card from '../components/Card';
 import Input from '../components/Input';
@@ -15,7 +16,7 @@ import Colors from '../constants/colors';
 import NumberContainer from '../components/NumberContainer';
 import AlertModal from '../components/AlertModal';
 
-const StartGameScreen = () => {
+const StartGameScreen = props => {
   const [enteredValue, setEnteredValue] = useState('');
   const [isInputConfirmed, setIsInputConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState(null);
@@ -88,7 +89,12 @@ const StartGameScreen = () => {
         <View>
           <Text>Chosen number is</Text>
           <NumberContainer>{selectedNumber || 0}</NumberContainer>
-          <Button title="Start game" style={styles.startGameButton} color={Colors.primary} />
+          <Button
+            title="Start game"
+            style={styles.startGameButton}
+            color={Colors.primary}
+            onPress={() => props.onStartGame(selectedNumber)}
+          />
         </View>
       </AlertModal>
     </>
@@ -132,5 +138,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
+
+StartGameScreen.propTypes = {
+  onStartGame: PropTypes.func.isRequired,
+};
 
 export default StartGameScreen;
