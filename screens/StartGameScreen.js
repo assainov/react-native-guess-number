@@ -12,6 +12,8 @@ import {
 import Card from '../components/Card';
 import Input from '../components/Input';
 import Colors from '../constants/colors';
+import NumberContainer from '../components/NumberContainer';
+import AlertModal from '../components/AlertModal';
 
 const StartGameScreen = () => {
   const [enteredValue, setEnteredValue] = useState('');
@@ -24,6 +26,7 @@ const StartGameScreen = () => {
 
   const resetInputHandler = () => {
     setEnteredValue('');
+    setIsInputConfirmed(false);
   };
 
   const confirmInputHandler = () => {
@@ -39,46 +42,56 @@ const StartGameScreen = () => {
     setIsInputConfirmed(true);
     setEnteredValue('');
     setSelectedNumber(chosenNumber);
+    Keyboard.dismiss();
   };
 
-  let showSelectedNumber = null;
-
-  if (isInputConfirmed) {
-    showSelectedNumber = <Text>Chosen number is: {selectedNumber}</Text>;
-  }
-
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <View style={styles.screen}>
-        <Text style={styles.title}>Start a New Game!</Text>
-        <Card style={styles.inputContainer}>
-          <Text>Select a Number</Text>
-          <Input
-            style={styles.input}
-            blurOnSubmit
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            maxLength={2}
-            onChangeText={numberInputHandler}
-            value={enteredValue}
-          />
-          <View style={styles.buttonContainer}>
-            <View style={styles.button}>
-              <Button title="Reset" onPress={resetInputHandler} color={Colors.accent} />
+    <>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
+        <View style={styles.screen}>
+          <Text style={styles.title}>Start a New Game!</Text>
+          <Card style={styles.inputContainer}>
+            <Text>Select a Number</Text>
+            <Input
+              style={styles.input}
+              blurOnSubmit
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="number-pad"
+              maxLength={2}
+              onChangeText={numberInputHandler}
+              value={enteredValue}
+              onSubmitEditing={() => confirmInputHandler()}
+            />
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Button title="Reset" onPress={resetInputHandler} color={Colors.accent} />
+              </View>
+              <View style={styles.button}>
+                <Button title="Confirm" onPress={confirmInputHandler} color={Colors.primary} />
+              </View>
             </View>
-            <View style={styles.button}>
-              <Button title="Confirm" onPress={confirmInputHandler} color={Colors.primary} />
-            </View>
-          </View>
-        </Card>
-        {showSelectedNumber}
-      </View>
-    </TouchableWithoutFeedback>
+          </Card>
+        </View>
+      </TouchableWithoutFeedback>
+      <AlertModal
+        visible={isInputConfirmed}
+        transparent
+        animationType="fade"
+        onRequestClose={() => {}}
+        resetModal={resetInputHandler}
+      >
+        <View>
+          <Text>Chosen number is</Text>
+          <NumberContainer>{selectedNumber || 0}</NumberContainer>
+          <Button title="Start game" style={styles.startGameButton} color={Colors.primary} />
+        </View>
+      </AlertModal>
+    </>
   );
 };
 
@@ -109,6 +122,14 @@ const styles = StyleSheet.create({
   input: {
     width: 50,
     textAlign: 'center',
+  },
+  chosenNumberCard: {
+    width: 300,
+    maxWidth: '80%',
+    alignItems: 'center',
+  },
+  startGameButton: {
+    textTransform: 'uppercase',
   },
 });
 
