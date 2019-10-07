@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '../constants/colors';
 
@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
     borderRadius: 10,
-    padding: 10,
+    padding: Dimensions.get('window').height < 600 ? 5 : 10,
     borderColor: Colors.accent,
     marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   numberContainer: {
-    minHeight: 50,
+    minHeight: Dimensions.get('window').height < 600 ? 30 : 50,
     justifyContent: 'center',
   },
   number: {
